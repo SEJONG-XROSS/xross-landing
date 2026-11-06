@@ -211,6 +211,35 @@
     opacity: 0;
   }
 }
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0.2;
+  }
+}
+/* hidden by default so it never shows as a static border under reduced motion */
+.anim-alert-ping {
+  opacity: 0;
+}
+
+@keyframes bell-ring {
+  0%, 40%, 100% { transform: rotate(0); }
+  4% { transform: rotate(16deg); }
+  8% { transform: rotate(-14deg); }
+  12% { transform: rotate(11deg); }
+  16% { transform: rotate(-8deg); }
+  20% { transform: rotate(5deg); }
+  24% { transform: rotate(-2deg); }
+  28% { transform: rotate(0); }
+}
+@keyframes alert-ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  60%, 100% { transform: scale(1.45); opacity: 0; }
+}
 @keyframes flow {
   to {
     stroke-dashoffset: -24;
@@ -229,6 +258,18 @@
   }
   .anim-flow {
     animation: flow 1.2s linear infinite;
+  }
+  /* hero alert card: starts after the card has risen in (1.7s + 0.5s) */
+  .anim-bell {
+    transform-origin: 50% 12%;
+    animation: bell-ring 3.2s ease-in-out 2.2s infinite;
+  }
+  .anim-alert-ping {
+    animation: alert-ping 3.2s ease-out 2.2s infinite;
+  }
+  /* LIVE recording dot */
+  .anim-blink {
+    animation: blink 1.2s ease-in-out infinite alternate;
   }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -119,7 +119,7 @@ export default function HeroVisual() {
 
         {/* live badge */}
         <span className="absolute right-3 top-3 flex items-center gap-2 rounded-md bg-ink/80 px-3 py-2 text-xs font-medium text-white backdrop-blur sm:right-5 sm:top-5 sm:text-sm">
-          <span className="size-2 rounded-full bg-[#ff4d5e]" />
+          <span className="anim-blink size-2 rounded-full bg-[#ff4d5e]" />
           LIVE · STORE 01
         </span>
 
@@ -169,8 +169,10 @@ export default function HeroVisual() {
           className="anim-rise flex w-full items-center gap-4 rounded-xl border border-white/15 bg-ink-2/95 p-4 shadow-[0_20px_40px_-16px_rgba(0,0,0,0.6)] backdrop-blur sm:p-5"
           style={delay(1.7)}
         >
-          <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-alert/15 text-alert sm:size-12">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <span className="relative grid size-11 shrink-0 place-items-center rounded-lg bg-alert/15 text-alert sm:size-12">
+            {/* ping ring + ringing bell, repeating after the card appears */}
+            <span aria-hidden className="anim-alert-ping absolute inset-0 rounded-lg border-2 border-alert/70" />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="anim-bell">
               <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" />
               <path d="M10 20.5a2 2 0 0 0 4 0" />
             </svg>

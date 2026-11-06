@@ -12,7 +12,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[calc(100svh-4rem-1px)] items-center overflow-hidden bg-ink text-white"
+      className="relative flex min-h-svh items-center overflow-hidden bg-ink pt-16 text-white"
     >
       {/* slowly drifting gradient glow in the logo colors */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
