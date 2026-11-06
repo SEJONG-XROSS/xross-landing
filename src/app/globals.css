@@ -1,26 +1,238 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand palette — sampled from the XROSS logo */
+  --color-ink: #081229; /* wordmark navy, page dark base */
+  --color-ink-2: #0e1c3d; /* raised dark surface */
+  --color-ink-3: #1a2b57; /* dark borders / tertiary */
+  --color-signal: #1f5bff; /* primary blue */
+  --color-sky: #3aa8ff; /* light blue from the X mark */
+  --color-violet: #5b34e8; /* violet from the X mark */
+  --color-paper: #f2f5fb; /* cool light section base */
+  --color-line: #dce3f0; /* light borders */
+  --color-muted: #56627d; /* secondary text on light */
+  --color-haze: #9aa8c7; /* secondary text on dark */
+  --color-alert: #ffb547; /* reserved for unpaid-item alerts */
+
+  --font-sans: var(--font-pretendard), "Pretendard", -apple-system,
+    BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR",
+    sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-padding-top: 64px; /* header height; the 1px border may overlap so no gap of the previous section shows */
+    -webkit-text-size-adjust: 100%;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss06";
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-height: 1.7;
+  }
+
+  /* Tailwind v4 preflight resets buttons to the default cursor */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .wrap {
+      padding-inline: 2rem;
+    }
+  }
+
+  .h-section {
+    font-size: clamp(1.875rem, 1.2rem + 2.6vw, 3rem);
+    font-weight: 720;
+    letter-spacing: -0.03em;
+    line-height: 1.28;
+  }
+
+  .lede {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    max-width: 38rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3.25rem;
+    padding-inline: 1.5rem;
+    border-radius: 0.625rem;
+    font-weight: 640;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--color-signal);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: #3b6fff;
+  }
+  .btn-ghost-dark {
+    border: 1px solid #ffffff33;
+    color: #fff;
+  }
+  .btn-ghost-dark:hover {
+    border-color: #ffffff80;
+  }
+  .btn-ghost-light {
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    background: #fff;
+  }
+  .btn-ghost-light:hover {
+    border-color: var(--color-ink);
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Hero background: three soft blobs drifting slowly (transform-only for performance) */
+.hero-blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+}
+.hero-blob-a {
+  width: 70vmax;
+  height: 70vmax;
+  left: -25vmax;
+  top: -30vmax;
+  background: radial-gradient(circle, rgb(31 91 255 / 0.42), transparent 62%);
+}
+.hero-blob-b {
+  width: 65vmax;
+  height: 65vmax;
+  right: -25vmax;
+  bottom: -35vmax;
+  background: radial-gradient(circle, rgb(91 52 232 / 0.45), transparent 62%);
+}
+.hero-blob-c {
+  width: 45vmax;
+  height: 45vmax;
+  left: 35%;
+  top: 10%;
+  background: radial-gradient(circle, rgb(58 168 255 / 0.18), transparent 65%);
+}
+
+@keyframes blob-a {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(18vw, 12vh) scale(1.15); }
+  100% { transform: translate(6vw, 28vh) scale(0.95); }
+}
+@keyframes blob-b {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-16vw, -14vh) scale(1.1); }
+  100% { transform: translate(-28vw, -4vh) scale(1.2); }
+}
+@keyframes blob-c {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-14vw, 18vh) scale(1.25); }
+  100% { transform: translate(10vw, 6vh) scale(0.9); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-blob-a {
+    animation: blob-a 18s ease-in-out infinite alternate;
+  }
+  .hero-blob-b {
+    animation: blob-b 22s ease-in-out infinite alternate;
+  }
+  .hero-blob-c {
+    animation: blob-c 16s ease-in-out infinite alternate;
+  }
+}
+
+/* Hero console: one orchestrated load sequence */
+@keyframes walk {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anim-walk {
+    animation: walk 5.2s cubic-bezier(0.45, 0, 0.3, 1) 0.4s both;
+  }
+  .anim-rise {
+    animation: rise 0.5s ease-out both;
+  }
+  .anim-pulse {
+    animation: pulse-ring 1.8s ease-out infinite;
+  }
+  .anim-flow {
+    animation: flow 1.2s linear infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-walk {
+    offset-distance: 100%;
+  }
 }
