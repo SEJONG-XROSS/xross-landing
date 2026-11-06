@@ -52,9 +52,24 @@ export async function POST(request: Request) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // `text` works for Slack/Discord-style webhooks; the rest is for custom receivers
-      body: JSON.stringify({ text: format(data), content: format(data), submittedAt, ...data }),
+      // (e.g. the Google Apps Script in scripts/google-sheets-contact.gs, which checks `secret`)
+      body: JSON.stringify({
+        text: format(data),
+        content: format(data),
+        submittedAt,
+        secret: process.env.CONTACT_WEBHOOK_SECRET,
+        ...data,
+      }),
     });
     if (!res.ok) throw new Error(`webhook responded ${res.status}`);
+    // Apps Script answers 200 even on failure, so honour an explicit { ok: false } body
+    const reply = await res.text();
+    try {
+      const parsed = JSON.parse(reply);
+      if (parsed && parsed.ok === false) throw new Error(`webhook rejected: ${parsed.error ?? "unknown"}`);
+    } catch (e) {
+      if (!(e instanceof SyntaxError)) throw e;
+    }
   } catch (err) {
     console.error("[contact] delivery failed", err);
     return Response.json(
